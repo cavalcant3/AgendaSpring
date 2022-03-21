@@ -3,7 +3,8 @@ package com.AgendaSpring.AgendaSpring.requests;
 import lombok.Data;
 
 @Data
-public class AgendaPostRequestBody {
+public class AgendaPutRequestBody {
+    private long id;
     private String name;
     private int numero;
 }

@@ -3,8 +3,11 @@ package com.AgendaSpring.AgendaSpring.service;
 import com.AgendaSpring.AgendaSpring.domain.Agenda;
 import com.AgendaSpring.AgendaSpring.repository.AgendaRepository;
 import com.AgendaSpring.AgendaSpring.requests.AgendaPostRequestBody;
+import com.AgendaSpring.AgendaSpring.requests.AgendaPutRequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,7 +20,28 @@ public class AgendaService {
         return agendaRepository.findAll();
     }
 
+    public Agenda findById(long id){
+        return agendaRepository.findById(id)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Contato não encontrado"));
+    }
+
     public Agenda save(AgendaPostRequestBody agendaPostRequestBody) {
-    return agendaRepository.save(Agenda.builder().nome(agendaPostRequestBody.getName()).build());
+//        note como chamamos os atributos
+        return agendaRepository.save(Agenda.builder().nome(agendaPostRequestBody.getName())
+                .numero(agendaPostRequestBody.getNumero()).build());
+    }
+
+
+    public void delete(long id) {
+        agendaRepository.delete(findById(id));
+    }
+
+    public void replace(AgendaPutRequestBody agendaPutRequestBody){
+        findById(agendaPutRequestBody.getId());
+        Agenda agenda = Agenda.builder()
+                .id(agendaPutRequestBody.getId())
+                .nome(agendaPutRequestBody.getName())
+                .numero(agendaPutRequestBody.getNumero()).build();
+        agendaRepository.save(agenda);
     }
 }
