@@ -1,6 +1,7 @@
 package com.AgendaSpring.AgendaSpring.service;
 
 import com.AgendaSpring.AgendaSpring.domain.Agenda;
+import com.AgendaSpring.AgendaSpring.exeption.BadRequestExeption;
 import com.AgendaSpring.AgendaSpring.repository.AgendaRepository;
 import com.AgendaSpring.AgendaSpring.requests.AgendaPostRequestBody;
 import com.AgendaSpring.AgendaSpring.requests.AgendaPutRequestBody;
@@ -22,7 +23,7 @@ public class AgendaService {
 
     public Agenda findById(long id){
         return agendaRepository.findById(id)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Contato não encontrado"));
+                .orElseThrow(()-> new BadRequestExeption("Contato não encontrado"));
     }
 
     public Agenda save(AgendaPostRequestBody agendaPostRequestBody) {
