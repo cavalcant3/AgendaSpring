@@ -2,6 +2,7 @@ package com.AgendaSpring.AgendaSpring.service;
 
 import com.AgendaSpring.AgendaSpring.domain.Agenda;
 import com.AgendaSpring.AgendaSpring.exeption.BadRequestExeption;
+import com.AgendaSpring.AgendaSpring.mapper.AgendaMapper;
 import com.AgendaSpring.AgendaSpring.repository.AgendaRepository;
 import com.AgendaSpring.AgendaSpring.requests.AgendaPostRequestBody;
 import com.AgendaSpring.AgendaSpring.requests.AgendaPutRequestBody;
@@ -28,8 +29,7 @@ public class AgendaService {
 
     public Agenda save(AgendaPostRequestBody agendaPostRequestBody) {
 //        note como chamamos os atributos
-        return agendaRepository.save(Agenda.builder().nome(agendaPostRequestBody.getName())
-                .numero(agendaPostRequestBody.getNumero()).build());
+        return agendaRepository.save(AgendaMapper.INSTANCE.toAgenda(agendaPostRequestBody));
     }
 
 
@@ -39,10 +39,7 @@ public class AgendaService {
 
     public void replace(AgendaPutRequestBody agendaPutRequestBody){
         findById(agendaPutRequestBody.getId());
-        Agenda agenda = Agenda.builder()
-                .id(agendaPutRequestBody.getId())
-                .nome(agendaPutRequestBody.getName())
-                .numero(agendaPutRequestBody.getNumero()).build();
+        Agenda agenda = AgendaMapper.INSTANCE.toAgenda(agendaPutRequestBody);
         agendaRepository.save(agenda);
     }
 }
